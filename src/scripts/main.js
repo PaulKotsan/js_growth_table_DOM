@@ -13,6 +13,10 @@ const addColumn = document.querySelector('.append-column');
 const removeColumn = document.querySelector('.remove-column');
 
 addRowButton.addEventListener('click', (e) => {
+  if (table.rows.length >= 10) {
+    return;
+  }
+
   const newRow = table.insertRow(-1);
 
   removeRowButton.disabled = false;
@@ -31,6 +35,10 @@ addRowButton.addEventListener('click', (e) => {
 });
 
 removeRowButton.addEventListener('click', (e) => {
+  if (table.rows.length <= 2) {
+    return;
+  }
+
   table.deleteRow(-1);
 
   addRowButton.disabled = false;
@@ -41,6 +49,10 @@ removeRowButton.addEventListener('click', (e) => {
 });
 
 addColumn.addEventListener('click', (e) => {
+  if (table.rows[0]?.cells.length >= 10) {
+    return;
+  }
+
   for (const row of table.rows) {
     row.insertCell(0);
   }
@@ -53,6 +65,10 @@ addColumn.addEventListener('click', (e) => {
 });
 
 removeColumn.addEventListener('click', (e) => {
+  if (table.rows[0]?.cells.length <= 2) {
+    return;
+  }
+
   for (const row of table.rows) {
     row.deleteCell(-1);
   }
