@@ -1,70 +1,56 @@
 'use strict';
 
-// Access table
 const table = document.querySelector('.field');
-
-// Use this to for simplicity
-const cube = document.createElement('td');
-
-// Access each button
 const addRowButton = document.querySelector('.append-row');
 const removeRowButton = document.querySelector('.remove-row');
 const addColumn = document.querySelector('.append-column');
 const removeColumn = document.querySelector('.remove-column');
 
-addRowButton.addEventListener('click', (e) => {
+addRowButton.addEventListener('click', () => {
   if (table.rows.length >= 10) {
     return;
   }
 
-  const newRow = table.insertRow(-1);
+  const newRow = table.insertRow();
+  const columnCount = table.rows[0]?.cells.length || 0;
 
-  removeRowButton.disabled = false;
+  for (let i = 0; i < columnCount; i++) {
+    const newCell = newRow.insertCell();
 
-  const columntCount = table.rows[0].cells.length;
-
-  for (let i = 0; i < columntCount; i++) {
-    const newCell = newRow.insertCell(0);
-
-    newCell.appendChild(cube);
+    newCell.textContent = ''; // Clear cell content
   }
 
-  if (table.rows.length >= 10) {
-    addRowButton.disabled = true;
-  }
+  addRowButton.disabled = table.rows.length === 10;
+  removeRowButton.disabled = table.rows.length <= 2;
 });
 
-removeRowButton.addEventListener('click', (e) => {
+removeRowButton.addEventListener('click', () => {
   if (table.rows.length <= 2) {
     return;
   }
 
   table.deleteRow(-1);
 
-  addRowButton.disabled = false;
-
-  if (table.rows.length === 2) {
-    removeRowButton.disabled = true;
-  }
+  addRowButton.disabled = table.rows.length === 10;
+  removeRowButton.disabled = table.rows.length <= 2;
 });
 
-addColumn.addEventListener('click', (e) => {
+addColumn.addEventListener('click', () => {
   if (table.rows[0]?.cells.length >= 10) {
     return;
   }
 
   for (const row of table.rows) {
-    row.insertCell(0);
+    const newCell = row.insertCell();
+
+    newCell.textContent = ''; // Clear cell content
   }
 
-  removeColumn.disabled = false;
-
-  if (table.rows[0]?.cells.length >= 10) {
-    addColumn.disabled = true;
-  }
+  addColumn.disabled = table.rows[0]?.cells.length === 10;
+  removeColumn.disabled = table.rows[0]?.cells.length <= 2;
 });
 
-removeColumn.addEventListener('click', (e) => {
+removeColumn.addEventListener('click', () => {
   if (table.rows[0]?.cells.length <= 2) {
     return;
   }
@@ -73,9 +59,6 @@ removeColumn.addEventListener('click', (e) => {
     row.deleteCell(-1);
   }
 
-  addColumn.disabled = false;
-
-  if (table.rows[0]?.cells.length === 2) {
-    removeColumn.disabled = true;
-  }
+  addColumn.disabled = table.rows[0]?.cells.length === 10;
+  removeColumn.disabled = table.rows[0]?.cells.length <= 2;
 });
